@@ -50,6 +50,7 @@
 
   <div id="iframe-container">
     <h1 id="table-header"></h1>
+    <a href="#" id="open-new-tab">(Click to open new tab)</a>
     <iframe id="webpage-iframe" src="" frameborder="0"></iframe>
   </div>
 
@@ -82,16 +83,16 @@
             rowData[key] = row[key] || '';
           });
 
-          // Handle the 'Model' property (url and name) separately
-          rowData['Model'] = `<a href="${row.url}" target="_blank">${row.name || ''}</a>`;
+          // Handle the 'Brain' property (url and name) separately
+          rowData['Brain'] = `<a href="${row.url}" target="_blank">${row.name || ''}</a>`;
 
           tableData.push(rowData);
         });
 
         // Create DataTable with dynamically generated columns
         const columns = [
-          // Create the 'Model' column for URLs (handled separately)
-          { title: 'Model', data: 'Model', orderable: true }, // Make the column sortable
+          // Create the 'Brain' column for URLs (handled separately)
+          { title: 'Brain', data: 'Brain', orderable: true }, // Make the column sortable
           // Generate columns for other properties dynamically
           ...allKeys.filter(key => key !== 'url' && key !== 'name').map(key => ({ title: key, data: key }))
         ];
@@ -113,6 +114,12 @@
           const name = $(this).text();
           $('#webpage-iframe').attr('src', linkUrl);
           $('#table-header').text(name);
+        });
+        // Handle click event on "Click to open new tab" link
+        $('#open-new-tab').on('click', function(event) {
+          event.preventDefault();
+          const linkUrl = $('#webpage-iframe').attr('src');
+          window.open(linkUrl, '_blank');
         });
       });
     });
